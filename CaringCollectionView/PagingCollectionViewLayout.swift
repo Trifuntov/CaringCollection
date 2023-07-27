@@ -8,9 +8,20 @@
 import UIKit
 
 class PagingCollectionViewLayout: UICollectionViewFlowLayout {
+    private let velocityThresholdPerPage: CGFloat = 2
+    private let numberOfItemsPerPage: CGFloat = 1
 
-    var velocityThresholdPerPage: CGFloat = 2
-    var numberOfItemsPerPage: CGFloat = 1
+    override init() {
+        super.init()
+        self.itemSize = CGSize(width: 300, height: 500)
+        self.minimumLineSpacing = 16
+        self.scrollDirection = .horizontal
+        self.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         guard let collectionView = collectionView else { return proposedContentOffset }
@@ -58,4 +69,3 @@ class PagingCollectionViewLayout: UICollectionViewFlowLayout {
         }
     }
 }
-

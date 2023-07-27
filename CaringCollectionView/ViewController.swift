@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController, UICollectionViewDataSource {
-    private var collectionView: UICollectionView?
+class ViewController: UIViewController {
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: PagingCollectionViewLayout())
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,23 +17,14 @@ class ViewController: UIViewController, UICollectionViewDataSource {
         setupUi()
     }
 
-    func setupCollection() {
-        let collectionViewLayout = PagingCollectionViewLayout()
-        collectionViewLayout.itemSize = CGSize(width: 300, height: 500)
-        collectionViewLayout.minimumLineSpacing = 16
-        collectionViewLayout.scrollDirection = .horizontal
-        collectionViewLayout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: collectionViewLayout)
-        collectionView?.dataSource = self
-        collectionView?.decelerationRate = .fast
-        collectionView?.showsHorizontalScrollIndicator = false
-
-        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+    private func setupCollection() {
+        collectionView.dataSource = self
+        collectionView.decelerationRate = .fast
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
     }
 
-    func setupUi() {
-        guard let collectionView else { return }
+    private func setupUi() {
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -43,7 +34,9 @@ class ViewController: UIViewController, UICollectionViewDataSource {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
+}
 
+extension ViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         20
     }
